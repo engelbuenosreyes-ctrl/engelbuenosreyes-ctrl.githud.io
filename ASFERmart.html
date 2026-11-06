@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASFER — Ropa, Fiestas, Renta y Papelería</title>
+<meta name="description" content="ASFERmart — Ropa para niños y niñas, artículos de fiesta, cocina, renta de mobiliario, arreglos y útiles escolares.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Hoja de estilos externa (editar en Sublime Text: style.css) -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="topbar">🚚 Envío gratis en pedidos sobre RD$2,000 · Entrega el mismo día disponible</div>
+  <div class="navrow wrap">
+    <a href="#" onclick="showView('home');return false;" class="logo">ASFER<span>mart</span></a>
+    <div class="searchbox">
+      <input id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos">
+      <button onclick="doSearch()" title="Buscar">🔍</button>
+    </div>
+    <div class="navicons">
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar modo oscuro">🌙</button>
+      <button class="icon-btn" onclick="openAuth('login')" title="Cuenta">👤</button>
+      <button class="icon-btn" onclick="toggleCart(true)" title="Carrito">🛒<span class="badge" id="cartBadge">0</span></button>
+      <button class="hamburger" onclick="document.querySelector('.catbar').classList.toggle('mshow')" title="Menú">☰</button>
+    </div>
+  </div>
+  <nav class="catbar"><ul id="catList" class="wrap"></ul></nav>
+</header>
+
+<!-- ===================== HOME ===================== -->
+<div class="view active" id="view-home">
+  <div class="hero" id="hero">
+      <button class="hero-arrow prev" id="heroPrev" title="Anterior">‹</button>
+      <button class="hero-arrow next" id="heroNext" title="Siguiente">›</button>
+  </div>
+  <div class="dots" id="heroDots"></div>
+
+  <div class="wrap">
+    <div class="benefits">
+      <div class="benefit">🚚<div><b>Entrega rápida</b><small>El mismo día en la ciudad</small></div></div>
+      <div class="benefit">🎉<div><b>Todo para tu evento</b><small>Fiesta, renta y arreglos</small></div></div>
+      <div class="benefit">💳<div><b>Pago seguro</b><small>Tarjetas y efectivo</small></div></div>
+      <div class="benefit">↩️<div><b>Devoluciones fáciles</b><small>Dentro de 7 días</small></div></div>
+    </div>
+  </div>
+
+  <section class="pad wrap">
+    <div class="sec-head"><h2>Popular esta semana</h2><a href="#" onclick="showView('products');return false;">Ver todo →</a></div>
+    <div class="grid" id="popularGrid"></div>
+  </section>
+
+  <section class="pad wrap" style="background:var(--panel);border-radius:16px">
+    <div class="sec-head"><h2>Novedades</h2><a href="#" onclick="showView('products');return false;">Ver todo →</a></div>
+    <div class="grid" id="newGrid"></div>
+  </section>
+
+  <section class="pad wrap">
+    <div class="newsletter">
+      <div><h2 style="font-size:20px">Obtén 10% de descuento en tu primer pedido</h2><p style="font-size:13.5px;opacity:.8">Suscríbete para recibir ofertas y novedades.</p></div>
+      <form onsubmit="subscribeNews(event)" style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="newsEmail" type="email" placeholder="tu@correo.com" aria-label="Correo electrónico">
+        <button class="btn btn-primary" type="submit">Suscribirse</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== PRODUCT LISTING ===================== -->
+<div class="view" id="view-products">
+  <section class="pad wrap">
+    <h2 style="margin-bottom:18px" id="listingTitle">Todos los productos</h2>
+    <div class="listing">
+      <aside class="filters">
+        <h4>Categoría</h4><div id="fCategory"></div>
+        <h4>Marca</h4><div id="fBrand"></div>
+        <h4>Precio</h4>
+        <input type="range" id="fPrice" min="0" max="3000" step="50" value="3000">
+        <div style="font-size:12.5px;color:var(--gray)">Hasta RD$<span id="fPriceVal">3000</span></div>
+        <h4>Etiquetas</h4><div id="fDiet"></div>
+        <button class="btn btn-outline btn-sm" style="margin-top:14px;width:100%" onclick="resetFilters()">Limpiar filtros</button>
+      </aside>
+      <div>
+        <div class="list-top">
+          <span id="resultCount" style="font-size:13.5px;color:var(--gray)"></span>
+          <select id="sortSel" aria-label="Ordenar productos">
+            <option value="relevance">Ordenar: Relevancia</option>
+            <option value="lohi">Precio: menor a mayor</option>
+            <option value="hilo">Precio: mayor a menor</option>
+          </select>
+        </div>
+        <div class="grid" id="listingGrid"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <strong style="color:#FF7A87;font-family:Poppins;font-size:18px">ASFERmart</strong>
+        <p style="margin-top:8px">Todo para tu familia y tus eventos.<br>Fiesta, renta, cocina y más.</p>
+      </div>
+      <div><h4>Tienda</h4><a href="#" onclick="showView('products');return false;">Todos los productos</a><a href="#" onclick="showView('home');return false;">Populares</a><a href="#" onclick="showView('home');return false;">Novedades</a></div>
+      <div><h4>Ayuda</h4><a href="#" onclick="toast('Información de envíos (demo)');return false;">Envíos</a><a href="#" onclick="toast('Devoluciones dentro de 7 días (demo)');return false;">Devoluciones</a><a href="#" onclick="openAuth('login');return false;">Mi cuenta</a></div>
+      <div><h4>Contacto</h4><span>📞 +1 (809) 555-1234</span><span>✉️ hola@asfermart.do</span><span>📍 Santo Domingo, Rep. Dom.</span></div>
+    </div>
+    <div class="foot-bottom">
+      <span>©️ <span id="year">2026</span> ASFER. Todos los derechos reservados.</span>
+      <span>Precios y disponibilidad son datos de demostración.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== CART DRAWER ===================== -->
+<div class="overlay-bg" id="overlayBg" onclick="toggleCart(false);closeModal()"></div>
+<aside class="drawer" id="cartDrawer" aria-label="Carrito de compras">
+  <div class="drawer-head"><h3>Tu Carrito</h3><button onclick="toggleCart(false)" style="font-size:20px" title="Cerrar">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="ship-note" id="shipNote"></div>
+    <div class="subtotal-row"><span>Subtotal</span><span id="cartSubtotal">RD$0.00</span></div>
+    <button class="btn btn-primary" style="width:100%" onclick="startCheckout()">Pagar</button>
+  </div>
+</aside>
+
+<!-- ===================== MODALS ===================== -->
+<div class="modal" id="pdModal">
+  <div class="modal-box wide"><button class="close-x" onclick="closeModal()">✕</button><div id="pdContent"></div></div>
+</div>
+
+<div class="modal" id="authModal">
+  <div class="modal-box"><button class="close-x" onclick="closeModal()">✕</button><div id="authContent"></div></div>
+</div>
+
+<div class="modal" id="checkoutModal">
+  <div class="modal-box"><button class="close-x" onclick="closeModal()">✕</button><div id="checkoutContent"></div></div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Script externo (editar en Sublime Text: app.js) -->
+<script src="app.js" defer></script>
+</body>
+</html>
